@@ -15,7 +15,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from wtforms import StringField, PasswordField
 from forms import CreatePostForm, RegisterForm, LoginForm
 from forms import CommentForm
-from flask_gravatar import Gravatar
+from hashlib import md5
 import os
 
 
@@ -26,15 +26,11 @@ ckeditor = CKEditor(app)
 Bootstrap5(app)
 
 # For adding profile images to the comment section
-gravatar = Gravatar(app,
-                    size=100,
-                    rating='g',
-                    default='retro',
-                    force_default=False,
-                    force_lower=False,
-                    use_ssl=False,
-                    base_url=None)
+def gravatar_url(email, size=100, rating='g', default='retro', force_default=False):
+    hash_value = md5(email.lower().encode('utf-8')).hexdigest()
+    return f"https://www.gravatar.com/avatar/{hash_value}?s={size}&d={default}&r={rating}"
 
+app.jinja_env.filters['gravatar'] = gravatar_url
 login_manager = LoginManager()
 login_manager.init_app(app)
 

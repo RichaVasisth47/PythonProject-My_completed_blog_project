@@ -1,7 +1,7 @@
 from datetime import date
 from functools import wraps
 from flask import abort
-import app
+
 from flask import Flask, abort, render_template, redirect, url_for, flash
 from flask_bootstrap import Bootstrap5
 from flask_ckeditor import CKEditor
